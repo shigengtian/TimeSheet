@@ -12,10 +12,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+     public function __construct()
+     {  
+         $this->middleware('auth');
+     }
 
     /**
      * Show the application dashboard.
@@ -24,6 +24,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $username = 'shigengtian@gmail.com';
+        $conditions = [
+            ['email', '=', $username],
+            ['password', '=', 'mademima33'],
+        ];
+        $user_name = DB::table('users')->where($conditions)->first();
+
+        session(['username' => $user_name->name]);
+
         $date_format = date('Y/m/d');
         $now = date($date_format);
         $date_explode = explode("/", $now);

@@ -11,10 +11,13 @@
 |
 */
 
-Auth::routes();
+//Auth::routes();
+
+Route::get('/login', 'AuthController@login')->name('login');
+Route::post('/logins', 'AuthController@authenticate');
+
+Route::get('/logout', 'AuthController@logout');
 
 Route::get('/', 'HomeController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-
