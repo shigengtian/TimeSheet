@@ -7,52 +7,83 @@
             <div class="box-header">
               <h3 class="box-title">2018-02</h3>
 
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-              </div>
             </div>
+            <form method="post" action="home">
+            @csrf
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+              <table class="table">
                 <tr>
-                  <th>日付</th>
+                  <th class="col-xs-2">日付</th>
                   <th>曜日</th>
                   <th>出勤時間</th>
                   <th>退勤時間</th>
                   <th>休憩時間</th>
-                  <th>作業時間</th>
                 </tr>
                 @foreach ($calendars as $calendar)
-                <tr bgcolor="">
+                  @php
+                    if(strlen(trim($calendar->public_holiday))>0 || in_array($calendar->day_of_week,[0,6])){
+                      $holiday_color = '#A9E2F3';
+                      $holiday_time_class = 'defult_time_no';
+                  }else{
+                      $holiday_color = '';
+                      $holiday_time_class = '';
+                   }
+                   if(strlen(trim($calendar->public_holiday))>0){
+                      $holiday_name = '  ('.$calendar->public_holiday.')';
+                  }else{
+                      $holiday_name = '';
+                   }
+                  @endphp
+                <tr bgcolor={{$holiday_color}}>
                   <td>{{ $calendar->year."-".$calendar->month."-".$calendar->day }}</td>
-                  <td>{{ $calendar->day_of_week_jp }}</td>
-                  <td>
-                    <input class="fromDateTime" type="text" >
+                  <input name="date[]" type="hidden" value="{{$calendar->year."-".$calendar->month."-".$calendar->day}}">
+                  <td>{{ $calendar->day_of_week_jp.$holiday_name}}</td>
+                  <td class="bootstrap-timepicker">
+                    <input class="start_time {{$holiday_time_class}}" type="text" name="start_time[]">
                   </td>
-                  <td>
-                    <input type="text" >
+                  <td class="bootstrap-timepicker">
+                    <input class="end_time {{$holiday_time_class}}" type="text" name="end_time[]">
                   </td>
-                  <td>
-                    <input type="text" >
+                  <td class="bootstrap-timepicker">
+                    <input class="rest_time {{$holiday_time_class}}" type="text" name="rest_time[]">
                   </td>
-                  <td>4</td>
                 </tr>
                 @endforeach
               </table>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary pull-right">出退勤时间登録</button>
+              </div>
             </div>
+          </form>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div>
       </div>
 
-<script type="text/javascript">
-$("#fromDateTime").datepicker("option", "dateFormat", 'yy/mm/dd');
-</script>
+ <script>
+  $( function() {
+    $('.start_time').timepicker({
+      minuteStep: 1,
+      showInputs: false,
+      showMeridian: false, //24hr mode
+      defaultTime: '09:00',
+    });
+    $('.end_time').timepicker({
+      minuteStep: 1,
+      showInputs: false,
+      showMeridian: false, //24hr mode
+      defaultTime: '18:00',
+    });
+     $('.rest_time').timepicker({
+      minuteStep: 1,
+      showInputs: false,
+      showMeridian: false, //24hr mode
+      defaultTime: '1:00',
+    });
+     $('.defult_time_no').val('');
+     
+  } );
+  </script>
 @endsection
