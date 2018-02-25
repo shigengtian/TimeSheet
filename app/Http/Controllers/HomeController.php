@@ -31,13 +31,22 @@ class HomeController extends Controller
         $month = (int)$date_explode[1];
 
         $calendars = $this->__getCalendars($year, $month);
+        $renders = [
+            'calendars' => $calendars,
+        ];
 
-        
-        return view('home/home', ['calendars' => $calendars]);
+        return view('home/home', $renders);
+    }
+
+    public function postTimeSheet(Request $request)
+    {
+        $input = $request->all();
+        dd($input);
     }
 
 
-    private function __getCalendars($year, $month){
+    private function __getCalendars($year, $month)
+    {
 
         $conditions = [
             ['year', '=', $year],
@@ -45,11 +54,11 @@ class HomeController extends Controller
         ];
 
         $calendars = DB::table('calendars')
-                                    ->where(
-                                        $conditions
-                                    )
-                                    ->orderby('id','ASC')    
-                                    ->get();
-        return($calendars);
+            ->where(
+                $conditions
+            )
+            ->orderby('id', 'ASC')
+            ->get();
+        return ($calendars);
     }
 }
