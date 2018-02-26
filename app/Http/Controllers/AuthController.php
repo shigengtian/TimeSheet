@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -17,18 +17,18 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Session::flush();
+        Auth::logout();
         return redirect('login');
     }
 
     public function authenticate(Request $request)
     {
-        $username = $request->username;
+        $email = $request->username;
         $password = $request->password;
-
-        $user_id = DB::table('users')->where('email', $username)->first();
-        dd($user_id);
-
-
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            return redirect()->intended('home');
+        } else {
+            return redirect()->intended('/');
+        }
     }
 }

@@ -14,7 +14,7 @@
 //Auth::routes();
 
 Route::get('/login', 'AuthController@login')->name('login');
-Route::post('/logins', 'AuthController@authenticate');
+Route::post('/login', 'AuthController@authenticate');
 
 Route::get('/logout', 'AuthController@logout');
 
