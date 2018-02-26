@@ -18,14 +18,14 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('login');
+        return redirect()->intended('/');
     }
 
     public function authenticate(Request $request)
     {
         $email = $request->username;
         $password = $request->password;
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+        if (Auth::attempt(['email' => $email, 'password' => $password,'active' => 1])) {
             return redirect()->intended('home');
         } else {
             return redirect()->intended('/');

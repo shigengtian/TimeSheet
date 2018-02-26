@@ -54,7 +54,7 @@
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>勤</b>怠</span>
             <!-- logo for regular state and mobile devices -->
@@ -64,16 +64,14 @@
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"></a>
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <!-- Messages: style can be found in dropdown.less-->
 
                     <li>
-                        <a href="#" class="dropdown-toggle" style="margin-right: 20px;">登出</a>
+                        <a href="/logout" class="dropdown-toggle" style="margin-right: 20px;">登出</a>
                     </li>
                 </ul>
             </div>
@@ -91,7 +89,7 @@
                     <!-- <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
                 </div>
                 <div class="pull-left info" style="padding-left: 5px; margin-top: 5px;">
-                    <p>Alexander Pierce</p>
+                    <p>{{ Auth::user()->name }}</p>
                     <!-- Status -->
                     <!-- <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
                 </div>
@@ -110,8 +108,8 @@
               </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="#">管理専用</a></li>
-                        <li><a href="#">Link in level 2</a></li>
+                        <li><a href="#">スタッフ一覧</a></li>
+                        <li><a href="#">スタッフ追加</a></li>
                     </ul>
                 </li>
             </ul>
