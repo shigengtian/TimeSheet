@@ -97,7 +97,7 @@
 
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">HEADER</li>
+                <li class="header">メニュー</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li class="active"><a href="#"><i class="fa fa-link"></i> <span>出退勤时间入力</span></a></li>
                 <li><a href="#"><i class="fa fa-link"></i> <span>出退勤时间照会</span></a></li>
@@ -123,9 +123,9 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                出退勤时间入力
-                <!-- <small>出退勤时间入力</small> -->
+                {{ $page }}
             </h1>
+
             <!-- <ol class="breadcrumb">
               <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
               <li class="active">Here</li>
@@ -134,7 +134,22 @@
 
         <!-- Main content -->
         <section class="content container-fluid">
-
+            @if (Session::has('sucess'))
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ Session::get('sucess') }}
+                </div>
+            @elseif (Session::has('warning'))
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ Session::get('warning') }}
+                </div>
+            @elseif (Session::has('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ Session::get('error') }}
+                </div>
+            @endif
             @yield('content')
 
         </section>

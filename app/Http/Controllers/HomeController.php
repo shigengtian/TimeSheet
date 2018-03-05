@@ -22,11 +22,6 @@ class HomeController extends Controller
         $date_explode = explode("/", $now);
         $year = (int)$date_explode[0];
         $month = (int)$date_explode[1];
-        $calendars = $this->__getCalendars($year, $month);
-
-        $renders = [
-            'calendars' => $calendars,
-        ];
 
         if ($request->isMethod('post')) {
             $date = $request->date;
@@ -34,16 +29,27 @@ class HomeController extends Controller
             $end_time = $request->end_time;
             $rest_time = $request->rest_time;
 
-            $res_vali = $this->__validation_timeSheet($date, $start_time, $end_time, $rest_time);
+            $validator = $this->__validation_timeSheet($date, $start_time, $end_time, $rest_time);
 
-            if($res_vali == True){
+            if ($validator == True) {
                 $res = $this->__saveTimeSheet($date, $start_time, $end_time, $rest_time);
-            }else{
-                dd($res_vali);
+                if($res == true){
+                    $request->session()->flash('sucess', '出退勤时间登録登録しました!!!');
+                }
+            } else {
+                $request->session()->flash('error', '時間を正しく入力してください!!!');
             }
-
-
         }
+
+        $calendars = $this->__getCalendars($year, $month);
+        $time_sheets = $this->__getTimeSheet($year,$month);
+        $renders = [
+            'calendars' => $calendars,
+            'time_sheets'=>$time_sheets,
+            'page' => '出退勤时间入力',
+        ];
+
+
         return view('home/home', $renders);
     }
 
@@ -64,6 +70,22 @@ class HomeController extends Controller
         return ($calendars);
     }
 
+    private function __getTimeSheet($year,$month){
+
+        $conditions = [
+            ['date', '>=', $year.'/'.$month.'/01']
+        ];
+
+        $res = DB::table('timesheets')
+            ->where(
+                $conditions
+            )
+            ->orderby('id', 'ASC')
+            ->get();
+
+        return $res;
+    }
+
     private function __saveTimeSheet($date, $start_time, $end_time, $rest_time)
     {
         $stff_id = Auth::user()->id;
@@ -81,18 +103,18 @@ class HomeController extends Controller
                     ])
                     ->count();
                 $to_save = array(
-                    'date' => (string) $date[$i],
-                    'start_time' => (string) $start_time[$i],
-                    'end_time' => (string) $end_time[$i],
-                    'rest_time' => (string) $rest_time[$i],
+                    'date' => (string)$date[$i],
+                    'start_time' => (string)$start_time[$i],
+                    'end_time' => (string)$end_time[$i],
+                    'rest_time' => (string)$rest_time[$i],
                     'staff_id' => $stff_id
                 );
 
                 if ($timesheet_count == 0) {
-                    $to_save = array_merge($to_save, array('created_time'=>$now_time));
+                    $to_save = array_merge($to_save, array('created_time' => $now_time));
                     DB::table('timesheets')->insert($to_save);
                 } else if ($timesheet_count > 0) {
-                    $to_save = array_merge($to_save, array('update_time'=>$now_time));
+                    $to_save = array_merge($to_save, array('update_time' => $now_time));
                     DB::table('timesheets')
                         ->where([
                             ['staff_id', '=', $stff_id],
@@ -110,26 +132,33 @@ class HomeController extends Controller
 
     private function __validation_timeSheet($date, $start_time, $end_time, $rest_time)
     {
-        $vali_flag = true;
+        $validator = true;
+
 
         for ($i = 0; $i < count($date); $i++) {
-            if(preg_match('/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/',$date[$i]) || strlen($date[$i]) == 0) {
-                $vali_flag = false;
+            if (strlen($start_time[$i]) != 0) {
+                if (!preg_match("#([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}#", $start_time[$i])) {
+                    $validator == false;
+                }
             }
-            if(preg_match('/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/',$start_time[$i]) || strlen($date[$i]) == 0) {
-                $vali_flag = false;
+
+            if (strlen($end_time[$i]) != 0) {
+                if (!preg_match("#([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}#", $end_time[$i])) {
+                    $validator == false;
+                }
             }
-            if(preg_match('/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/',$end_time[$i]) || strlen($date[$i]) == 0) {
-                $vali_flag = false;
+            if (strlen($rest_time[$i]) != 0) {
+                if (!preg_match("#([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}#", $rest_time[$i])) {
+                    $validator == false;
+                }
             }
-            if(preg_match('/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/',$rest_time[$i]) || strlen($date[$i]) == 0) {
-                $vali_flag = false;
-            }
-            if($vali_flag == false){
+
+            if ($validator == false) {
                 break;
             }
+
         }
 
-        return $vali_flag;
+        return $validator;
     }
 }
