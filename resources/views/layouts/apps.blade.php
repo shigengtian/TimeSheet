@@ -100,15 +100,15 @@
                 <li class="header">メニュー</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li class="active"><a href="/home"><i class="fa fa-link"></i> <span>出退勤时间入力</span></a></li>
-                <li><a href="/timesheet"><i class="fa fa-link"></i> <span>出退勤时间照会</span></a></li>
+                <li><a href="/timesheet"><i class="fa fa-link"></i> <span>勤務状況照会</span></a></li>
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>管理専用</span>
+                    <a><i class="fa fa-link"></i> <span>管理専用</span>
                         <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="#">スタッフ一覧</a></li>
+                        <li><a href="/staff">スタッフ一覧</a></li>
                         <li><a href="#">スタッフ追加</a></li>
                     </ul>
                 </li>

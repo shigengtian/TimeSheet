@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -39,6 +40,8 @@ class HomeController extends Controller
             } else {
                 $request->session()->flash('error', '時間を正しく入力してください!!!');
             }
+
+            return redirect('home');
         }
 
         $calendars = $this->__getCalendars($year, $month);

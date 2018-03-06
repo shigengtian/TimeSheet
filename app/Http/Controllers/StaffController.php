@@ -6,7 +6,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TimesheetController extends Controller
+class StaffController extends Controller
 {
 
     public function __construct()
@@ -24,32 +24,31 @@ class TimesheetController extends Controller
         $month = (int)$date_explode[1];
 
 
-        $calendars = $this->__getCalendars($year, $month);
+        $users = $this->__getUsers();
         $time_sheets = $this->__getTimeSheet($year,$month);
         $renders = [
-            'calendars' => $calendars,
+            'staffs' => $users,
             'time_sheets'=>$time_sheets,
-            'page' => '勤務状況照会',
+            'page' => 'スタッフ一覧',
         ];
 
-        return view('timesheet/index', $renders);
+        return view('staff/index', $renders);
     }
 
 
-    private function __getCalendars($year, $month)
+    private function __getUsers()
     {
         $conditions = [
-            ['year', '=', $year],
-            ['month', '=', $month]
+            ['active', '=', 1],
         ];
 
-        $calendars = DB::table('calendars')
+        $res = DB::table('users')
             ->where(
                 $conditions
             )
             ->orderby('id', 'ASC')
             ->get();
-        return ($calendars);
+        return ($res);
     }
 
     private function __getTimeSheet($year,$month){

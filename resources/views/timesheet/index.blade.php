@@ -85,6 +85,9 @@
                                 <td>{{$sum_job_time}}</td>
                             </tr>
                         </table>
+                        <div class="box-footer">
+                            <button class="btn btn-primary pull-right">印刷レビュー</button>
+                        </div>
                     </div>
                 </form>
                 <!-- /.box-body -->
