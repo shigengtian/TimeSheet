@@ -49,7 +49,6 @@ class HomeController extends Controller
             'page' => '出退勤时间入力',
         ];
 
-
         return view('home/home', $renders);
     }
 

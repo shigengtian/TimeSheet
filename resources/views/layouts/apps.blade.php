@@ -99,8 +99,8 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">メニュー</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="#"><i class="fa fa-link"></i> <span>出退勤时间入力</span></a></li>
-                <li><a href="#"><i class="fa fa-link"></i> <span>出退勤时间照会</span></a></li>
+                <li class="active"><a href="/home"><i class="fa fa-link"></i> <span>出退勤时间入力</span></a></li>
+                <li><a href="/timesheet"><i class="fa fa-link"></i> <span>出退勤时间照会</span></a></li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>管理専用</span>
                         <span class="pull-right-container">

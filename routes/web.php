@@ -9,3 +9,5 @@ Route::get('/', 'HomeController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home', 'HomeController@index');
+
+Route::get('/timesheet', 'TimesheetController@index');
